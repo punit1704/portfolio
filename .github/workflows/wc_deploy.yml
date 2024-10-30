@@ -1,9 +1,7 @@
 name: WC_Deploy
 on:
   workflow_call:
-    secrets:
-        GHA_PAT:
-          required: true   
+      
   # Allows you to run this workflow manually from the Actions tab
     inputs:
       PROJECT_NAME:
@@ -14,15 +12,6 @@ on:
         description: 'Application Name'
         required: true
         type: string
-      TARGET:
-        description: 'Select a targeted node for terragrunt'
-        required: false
-        type: string
-      DEFAULT_JOB_TIMEOUT:
-        description: 'Default value of timeout at Job level'
-        required: false
-        type: number
-        default: 5
 permissions:
   contents: read
   id-token: write
@@ -33,54 +22,14 @@ jobs:
    
   WC_Deploy_DMQ_Cluster:
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ inputs.DEFAULT_JOB_TIMEOUT && inputs.DEFAULT_JOB_TIMEOUT || fromJSON(vars.DEFAULT_JOB_TIMEOUT) }}
-    strategy:
-      fail-fast: false
     env:
       PROJECT_NAME: '${{ inputs.PROJECT_NAME }}'
       APP_NAME: '${{ inputs.APP_NAME }}'
       ACTIONS_STEP_DEBUG: true
-    #   RELEASE_BRANCH: '${{ github.ref_name }}'
-    #   TF_WORKING_DIR: 'pro-wfm-dmq-cd/terraform'
-    #   ANSIBLE_WORKING_DIR: 'pro-wfm-dmq-cd/ansible'
-    #   CONFIG_SCRIPT_FILE: 'pro-wfm-dmq-cd/scripts'
-    #   CD_REPO: 'pro-wfm-dmq-cd'
-    #   TARGET: '${{ inputs.TARGET }}'
+   
     defaults:
       run:
         shell: bash
     steps:    
-    # - name: Checkout ${{ env.CD_REPO }} repo
-    #   uses: actions/checkout@v4
-    #   with:
-    #     repository: UKGEPIC/${{ env.CD_REPO }}
-    #     ref: ${{ env.RELEASE_BRANCH }}
-    #     token: ${{ secrets.GHA_PAT }}
-    #     path: './${{ env.CD_REPO }}'
-    #     fetch-depth: 0  # 0 indicates unlimited depth, fetching all history including tags
-    #     fetch-tags: 'true'
-    
-    # - name: Set Environment Variables for Authentication
-    #   run: |        
-    #     if [[ -z "${{ env.PROJECT_NAME }}" ]]; then
-    #       echo "PROJECT_NAME is blank or null, failing the workflow."
-    #       exit 1
-    #     fi
-    #     echo "$(cat ./${{ env.CD_REPO }}/environments/${{ env.PROJECT_NAME }}/.env | grep -v '^#')" >> $GITHUB_ENV
-    #     echo "DEPLOY_ACTOR=${{github.actor}}" >> $GITHUB_ENV
-
-    # - name: Load environment variables from .env
-    #   run: |
-    #      if [ -f .env ]; then
-    #       cat .env >> $GITHUB_ENV
-    #      fi
-    #   shell: bash
-
-    # - name: Authenticate to GCP
-    #   uses: google-github-actions/auth@v1 
-    #   with:
-    #     workload_identity_provider: "projects/${{ env.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ env.POOL_ID }}/providers/${{ env.PROVIDER_ID }}"
-    #     service_account: ${{ env.SERVICE_ACCOUNT }}   
-
     - name: ${{ env.PROJECT_NAME }}
       run: echo "${{ env.PROJECT_NAME }}"
