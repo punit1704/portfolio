@@ -12,11 +12,19 @@ on:
         description: 'Application Name'
         required: true
         type: string
+      DEFAULT_JOB_TIMEOUT:
+        description: 'Default value of timeout at Job level'
+        required: false
+        type: number
+        default: 5
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:         
    
   WC_Deploy_DMQ_Cluster:
     runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.DEFAULT_JOB_TIMEOUT && inputs.DEFAULT_JOB_TIMEOUT || fromJSON(vars.DEFAULT_JOB_TIMEOUT) }}
+    strategy:
+      fail-fast: false
     env:
       PROJECT_NAME: '${{ inputs.PROJECT_NAME }}'
       APP_NAME: '${{ inputs.APP_NAME }}'
