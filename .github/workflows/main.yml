@@ -1,0 +1,30 @@
+name: Deploy_Service
+run-name: ${{ inputs.APP_NAME }}${{ inputs.guid && ' | ' || '' }}${{ inputs.guid }}
+on:
+  workflow_dispatch:
+    inputs:
+      guid:
+        description: 'Unique Indentifier [optional] :(Unique String to identify the Workflow e.g. test_snapshot)' 
+        type: string
+        default: 'test_initial_workflow'
+      PROJECT_NAME:
+        description: 'Environment Name :(Select prd for Production Env, dev for Development Env)'
+        required: true
+        default: 'dev' # Default value for PROJECT_NAME
+        type: choice
+        options: ['dev', 'int', 'prd']
+      APP_NAME:
+        description: 'Deployment Name :(Name of Deployment e.g. keng03-dev03-ins01-tms34-dmq-use1)'
+        required: true
+        type: string
+        default: 'keng03-dev03-dmq-test1' # Default value for deployment name
+
+jobs:
+
+  Deploy:
+    uses: ./.github/workflows/wc_deploy.yml
+    with:
+      PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+      APP_NAME: ${{ inputs.APP_NAME }}
+    secrets: 
+      GHA_PAT: ${{ secrets.GHA_PAT }}
