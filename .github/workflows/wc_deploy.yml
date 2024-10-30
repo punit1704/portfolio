@@ -12,11 +12,6 @@ on:
         description: 'Application Name'
         required: true
         type: string
-permissions:
-  contents: read
-  id-token: write
-  issues: write
-  pull-requests: write
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:         
    
