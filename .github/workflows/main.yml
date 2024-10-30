@@ -18,7 +18,9 @@ on:
         required: true
         type: string
         default: 'keng03-dev03-dmq-test1' # Default value for deployment name
-
+  push:
+    branches:
+         - main
 jobs:
 
   Deploy:
