@@ -26,5 +26,3 @@ jobs:
     with:
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
       APP_NAME: ${{ inputs.APP_NAME }}
-    secrets: 
-      GHA_PAT: ${{ secrets.GHA_PAT }}
